@@ -1,0 +1,58 @@
+#!/usr/bin/python
+# To be run as a 'post-commit' hook.
+
+import os
+import os.path
+import sys
+import random
+import string
+import textwrap
+import subprocess
+
+from photo import takePhoto, addCaptionToPhoto
+from git import getMostRecentCommitHashAndMessage, getUserName, addFile, amendPreviousCommit
+
+sys.stdin = open('/dev/tty')
+
+def randomString():
+	char_set = string.ascii_uppercase + string.digits
+	return ''.join(random.sample(char_set*10, 10))
+
+def log(message, verbose=False):
+	if verbose: print message
+
+def main(args):
+	
+	if os.path.exists(".gh-no-execute"):
+		os.remove(".gh-no-execute")
+		return
+
+	if raw_input("Add to story? (y/N): ") != "y":
+		print "Aborted."
+		return
+
+	info = getMostRecentCommitHashAndMessage()
+	username = getUserName()
+
+	# Handle creating stories directory
+	stories_dir = "__stories/"
+	if not os.path.isdir(stories_dir):
+		log("[+] Created stories directory.")
+		os.mkdir(stories_dir)
+
+	# Take a photo
+	log("[+] Taking photo for story...")
+	photoPath = stories_dir + username + "-" + randomString() + ".png"
+	takePhoto(photoPath)
+	addCaptionToPhoto(photoPath, info["msg"])
+
+	# Add the photo to the last commit.
+	log("[+] Adding story to commit...")
+	addFile(photoPath)
+	amendPreviousCommit()
+
+	# Done
+	log("[+] Done.")
+
+if __name__ == "__main__":
+	main(sys.argv[1:])
