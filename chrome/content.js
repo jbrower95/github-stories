@@ -1,5 +1,8 @@
-let READ_STORIES = null;
-async_get("stories", def={}).then(function(stories) {
+var READ_STORIES = [];
+
+async_get("stories", def=[]).then(function(stories) {
+	console.log("Got stories; ");
+	console.log(stories);
 	READ_STORIES = stories;
 });
 
