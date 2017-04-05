@@ -46,6 +46,8 @@ Usage::
 	be that much extra work, though.
 
 5. There are stories in this repository! 
+![Stories](http://i.imgur.com/0qELDKQ.png)
+
 LICENSE: MIT
 Libraries used: jQuery
 
