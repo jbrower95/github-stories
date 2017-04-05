@@ -45,7 +45,7 @@ Usage::
 	and look for /Library/Fonts and change it to your fonts directory. It shouldn't
 	be that much extra work, though.
 
-
+5. There are stories in this repository! 
 LICENSE: MIT
 Libraries used: jQuery
 
